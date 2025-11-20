@@ -158,7 +158,8 @@
             font-size: 1.2em;
             font-weight: 600;
             width: 100%;
-            transition: background-color 0.3s ease;
+            transition: all 0.3s ease;
+            position: relative;
         }
 
         .btn-submit:hover {
@@ -172,22 +173,78 @@
         .btn-submit:disabled {
             background: #cccccc;
             cursor: not-allowed;
-            box-shadow: none;
         }
 
-        .success-message {
-            display: none;
-            background-color: #27ae60;
-            color: white;
-            padding: 20px;
+        .btn-submit.loading {
+            background: #0087C3;
+        }
+
+        .btn-submit.loading::after {
+            content: "";
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            top: 50%;
+            right: 20px;
+            margin-top: -8px;
+            border: 2px solid white;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spinner 0.6s linear infinite;
+        }
+
+        @keyframes spinner {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 20px 30px;
             border-radius: 10px;
-            text-align: center;
-            margin-bottom: 20px;
-            animation: slideIn 0.5s ease-out;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            max-width: 400px;
         }
 
-        .success-message.show {
-            display: block;
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.success {
+            border-left: 4px solid #27ae60;
+        }
+
+        .toast.error {
+            border-left: 4px solid #e74c3c;
+        }
+
+        .toast-icon {
+            font-size: 2em;
+            flex-shrink: 0;
+        }
+
+        .toast-content {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-weight: 600;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+
+        .toast-message {
+            color: #666;
+            font-size: 0.9em;
         }
 
         .error-message {
@@ -208,6 +265,95 @@
             font-size: 0.9em;
         }
 
+        /* Overlay pour le succès */
+        .success-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .success-overlay.show {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .success-modal {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 400px;
+            animation: scaleIn 0.3s ease;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: #27ae60;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 3em;
+            color: white;
+            animation: checkmark 0.5s ease 0.3s both;
+        }
+
+        @keyframes checkmark {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.2);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .success-title {
+            font-size: 1.5em;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .success-text {
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .success-detail {
+            color: #999;
+            font-size: 0.9em;
+        }
+
         @media (max-width: 600px) {
             .container {
                 padding: 25px;
@@ -220,10 +366,35 @@
             .logo img {
                 max-width: 200px;
             }
+
+            .toast {
+                right: 10px;
+                left: 10px;
+                max-width: none;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Toast notification -->
+    <div class="toast" id="toast">
+        <div class="toast-icon" id="toastIcon"></div>
+        <div class="toast-content">
+            <div class="toast-title" id="toastTitle"></div>
+            <div class="toast-message" id="toastMessage"></div>
+        </div>
+    </div>
+
+    <!-- Success overlay -->
+    <div class="success-overlay" id="successOverlay">
+        <div class="success-modal">
+            <div class="success-icon">✓</div>
+            <div class="success-title">Présence enregistrée !</div>
+            <div class="success-text">Votre émargement a été validé avec succès.</div>
+            <div class="success-detail">Le PDF a été téléchargé.</div>
+        </div>
+    </div>
+
     <div class="container">
         <div class="header">
             <div class="logo">
@@ -232,10 +403,6 @@
             <h1>Feuille d'Émargement</h1>
             <p class="subtitle">AKD - Vitrolles</p>
             <p class="date-info" id="currentDate"></p>
-        </div>
-
-        <div class="success-message" id="successMessage">
-            ✓ Votre présence a été enregistrée avec succès !
         </div>
 
         <form id="emargementForm">
@@ -257,8 +424,7 @@
                 <canvas id="signaturePad" class="signature-pad"></canvas>
                 <span class="error-message" id="signatureError">Veuillez apposer votre signature</span>
                 <div class="signature-controls">
-                    <button type="button" class="btn-clear" id="clearBtn">
-                        Effacer</button>
+                    <button type="button" class="btn-clear" id="clearBtn">🗑️ Effacer</button>
                 </div>
             </div>
 
@@ -273,6 +439,25 @@
     </div>
 
     <script>
+        // Fonction pour afficher un toast
+        function showToast(type, title, message) {
+            const toast = document.getElementById('toast');
+            const toastIcon = document.getElementById('toastIcon');
+            const toastTitle = document.getElementById('toastTitle');
+            const toastMessage = document.getElementById('toastMessage');
+
+            toast.className = 'toast ' + type;
+            toastIcon.textContent = type === 'success' ? '✓' : '✕';
+            toastTitle.textContent = title;
+            toastMessage.textContent = message;
+
+            toast.classList.add('show');
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 4000);
+        }
+
         // Afficher la date actuelle
         const dateElement = document.getElementById('currentDate');
         const today = new Date();
@@ -343,6 +528,7 @@
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             hasSignature = false;
             document.getElementById('signatureError').classList.remove('show');
+            showToast('success', 'Signature effacée', 'Vous pouvez signer à nouveau');
         });
 
         // Gestion du formulaire
@@ -359,16 +545,24 @@
             // Validation du prénom
             if (!prenom) {
                 document.getElementById('prenomError').classList.add('show');
+                showToast('error', 'Erreur', 'Veuillez sélectionner votre prénom');
                 isValid = false;
             }
 
             // Validation de la signature
             if (!hasSignature) {
                 document.getElementById('signatureError').classList.add('show');
+                showToast('error', 'Erreur', 'Veuillez apposer votre signature');
                 isValid = false;
             }
 
             if (!isValid) return;
+
+            // Afficher l'état de chargement
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.classList.add('loading');
+            submitBtn.textContent = 'Génération du PDF...';
+            submitBtn.disabled = true;
 
             // Préparation des données
             const signatureData = canvas.toDataURL('image/png');
@@ -382,18 +576,25 @@
                 heure: today.toLocaleTimeString('fr-FR')
             };
 
-            // Génération du PDF
-            generatePDF(emargementData);
+            // Petit délai pour simuler le traitement
+            setTimeout(() => {
+                // Génération du PDF
+                generatePDF(emargementData);
 
-            // Afficher le message de succès
-            document.getElementById('successMessage').classList.add('show');
-            
-            // Désactiver le formulaire
-            document.getElementById('submitBtn').disabled = true;
-            document.getElementById('prenom').disabled = true;
-            canvas.style.pointerEvents = 'none';
-            canvas.style.opacity = '0.5';
-            document.getElementById('clearBtn').disabled = true;
+                // Afficher la modal de succès
+                document.getElementById('successOverlay').classList.add('show');
+
+                // Désactiver le formulaire
+                document.getElementById('prenom').disabled = true;
+                canvas.style.pointerEvents = 'none';
+                canvas.style.opacity = '0.5';
+                document.getElementById('clearBtn').disabled = true;
+
+                // Masquer la modal après 3 secondes
+                setTimeout(() => {
+                    document.getElementById('successOverlay').classList.remove('show');
+                }, 3000);
+            }, 500);
         });
 
         // Fonction pour générer le PDF
@@ -455,6 +656,9 @@
 
             // Télécharger le PDF
             doc.save(fileName);
+
+            // Toast de confirmation
+            showToast('success', 'PDF téléchargé !', 'Le fichier "' + fileName + '" a été enregistré');
         }
     </script>
 </body>
