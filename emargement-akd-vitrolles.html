@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Émargement - AKD MIDEA Vitrolles</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            padding: 40px;
+            border: 1px solid #e0e0e0;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo img {
+            max-width: 250px;
+            height: auto;
+        }
+
+        h1 {
+            color: #000;
+            font-size: 1.8em;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+
+        .date-info {
+            color: #999;
+            font-size: 0.9em;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            background-color: white;
+            cursor: pointer;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #00A0E3;
+            box-shadow: 0 0 0 3px rgba(0, 160, 227, 0.1);
+        }
+
+        .signature-section {
+            margin-bottom: 25px;
+        }
+
+        .signature-pad {
+            border: 3px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: crosshair;
+            display: block;
+            width: 100%;
+            height: 200px;
+            background-color: #fafafa;
+            transition: border-color 0.3s ease;
+        }
+
+        .signature-pad:hover {
+            border-color: #00A0E3;
+        }
+
+        .signature-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .btn-clear {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-clear:hover {
+            background-color: #c0392b;
+        }
+
+        .btn-submit {
+            background: #00A0E3;
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: 600;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            background: #0087C3;
+        }
+
+        .btn-submit:active {
+            background: #006EA3;
+        }
+
+        .btn-submit:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .success-message {
+            display: none;
+            background-color: #27ae60;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.9em;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #999;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+
+            .logo img {
+                max-width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <img id="logoImg" src="data:image/svg+xml;base64,PHN2ZyBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGZpbGwtcnVsZT0iZXZlbm9kZCIgaGVpZ2h0PSI5NjIiIGltYWdlLXJlbmRlcmluZz0ib3B0aW1pemVRdWFsaXR5IiBzaGFwZS1yZW5kZXJpbmc9Imdlb21ldHJpY1ByZWNpc2lvbiIgdGV4dC1yZW5kZXJpbmc9Imdlb21ldHJpY1ByZWNpc2lvbiIgdmlld0JveD0iLTEgMCAzMjI5IDEyNDQiIHdpZHRoPSIyNTAwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxnIGZpbGw9IiMwMGIwZjAiIGZpbGwtcnVsZT0ibm9uemVybyI+PHBhdGggZD0iTTE0ODEgNjA5djQ0NmgxMDVWNjA5em0tMTg5LTE3MGgtMTA4Yy0xMiAwLTEwIDExLTEwIDExIDIgMTQgNSAzNyA1IDg1IDAgMTA2LTEzIDI1OC0xMjkgNDAzbC04IDEwcy03MC00ODgtNzEtNDk3YzAgMCAwLTExLTEwLTExSDg1MmMtMTAgMC0xMCAxMS0xMCAxMS0zIDU2LTM0IDUyNi0zNzcgNjAyIDczIDggMTYxLTE1IDIzOC02MiA5NS01OSAxNTktMTQ2IDE4MC0yNDYgMCAwIDQyIDI2MiA0NyAzMjJ2NGwtMyAyYy05NiA1MS0yMDUgNzktMzE0IDc5LTI3MCAwLTUwOS0xNjAtNjE0LTQwNCA2MiAyODcgMzE4IDQ5NiA2MTcgNDk2IDM0OSAwIDU1Ny0yOTIgNTkzLTUwMCAwIDAgNDcgMzAzIDQ4IDMxM2gxNDNjLTItMTMtOTctNTk1LTk4LTYwNCAwIDAgMC0xMS0xMC0xMXpNODMgNjk0YzAtMzIwIDI3MC01ODAgNjAxLTU4MCAyMDUgMCAzOTYgMTAzIDUwNyAyNzBDMTExMCAxNTYgODg0IDAgNjMxIDAgMzA0IDAgMzggMjU1IDM4IDU2OGMwIDg2IDIxIDE3MCA2MCAyNDctOS0zOS0xNS04MC0xNS0xMjB6bTI1MDYtMjFjLTM4LTQ0LTkxLTY3LTE1NS02Ny02NSAwLTEyMCAyMS0xNjQgNjMtNDMgNDEtNjUgOTYtNjUgMTY0IDAgNjcgMjEgMTIxIDYzIDE2MXMxMDMgNjAgMTc5IDYwYzE0OCAwIDE4MC0xMDIgMTkyLTEzNWwtMzgtMTJjLTM0IDYyLTExMCA2Ni0xNTUgNjMtMzItMi02MS0xMy04NC0yOS0yMy0xNy0zOS00MS00Ni03OGwtMi0xNGgzMzJjLTEtNzMtMjAtMTMyLTU3LTE3NXptLTI2NyAxMTNjLTUgMC01LTUtNS03IDQtMjYgMTQtNDYgMzItNjQgMjAtMjEgNTEtMzMgODQtMzMgMzAgMCA1NCA5IDc1IDI2IDE3IDE1IDI5IDM2IDM2IDY1IDEgMyAzIDEyLTUgMTJoLTIxN3ptNjAxLTE4MmMtMTI2IDAtMTcxIDc3LTE4NSAxMTMgMCAxLTUgMTMtNSAxM2w0MiAxNHMyNy03OCAxMzQtNzNjMTA4IDQgOTUgOTMgOTUgMTA3LTYwLTE4LTE0NS0xNi0yMDEgOS03MCAzMi04MSA5Ni03OCAxNDMgMyA3MCA2NSAxMTkgMTQ1IDEyMyA3MiA0IDEwNC0xMiAxMzQtNDFsLTEgNDFoOTVWNzQ2YzItNTMtMzUtMTQzLTE3NS0xNDN6bTgwIDM0NmMwIDctMiAxMi04IDE1LTE4IDktNTYgMjEtMTAzIDE4LTQ5LTQtNjgtMzktNzEtNTQtMS02LTEyLTcxIDUxLTkxIDQxLTEzIDkzLTUgMTIxIDMgOCAyIDEwIDcgMTAgMTd2OTN6TTE1NzkgNDM5aC04N2MtMTMgMC0xMSAxMy0xMSAxM3Y5NGgxMDd2LTk1czEtMTEtMTAtMTF6bTUzNCAwaC04OWMtOSAwLTkgMTAtOSAxMHYxODNsLTEzLTdjLTE0LTctMjgtMTItNDMtMTVzLTMzLTQtNTMtNGMtNzAgMC0xMjcgMjAtMTY5IDYxLTQxIDQwLTYzIDk4LTYzIDE2OSAwIDYzIDE4IDExNiA1MyAxNTggMzUgNDEgODYgNjIgMTUzIDYyIDk2IDAgMTM0LTU4IDEzNC01OHY1NmgxMDhWOTQ5IDQ1MHMwLTExLTktMTF6bS0xMDQgNDk0Yy0xMCA5LTIzIDE2LTM5IDIyLTE3IDctMzcgMTAtNTkgMTAtMzYgMC02NS0xMi04Ni0zNnMtMzEtNTktMzEtMTA2YzAtNDYgMTAtODAgMjktMTAxIDIwLTIyIDUwLTMzIDkwLTMzIDIxIDAgNDEgMyA1OSAxMCAxNiA2IDI4IDEyIDM3IDIwIDMgMyA2IDggNiAxNXYxODNjMCA3LTMgMTItNiAxNXpNMzE2MyAzNjVjLTM3IDAtNjUgMjgtNjUgNjUgMCAzNiAyOCA2NSA2NSA2NXM2NS0yOCA2NS02NWMwLTM2LTI4LTY1LTY1LTY1em0wIDljMzEgMCA1NSAyNSA1NSA1NnMtMjMgNTYtNTUgNTZjLTMxIDAtNTUtMjUtNTUtNTZzMjMtNTYgNTUtNTZ6bS0xNCA2MGgxNmwyMSAzM2gxMWwtMjItMzNjMTAtMiAxOS04IDE5LTIxcy03LTIxLTI0LTIxaC0yOXY3NWg5di0zM3ptMC04di0yNmgxN2M5IDAgMTggMiAxOCAxMyAwIDEzLTExIDEzLTIyIDEzaC0xMnoiLz48L2c+PC9zdmc+" alt="MIDEA Logo">
+            </div>
+            <h1>Feuille d'Émargement</h1>
+            <p class="subtitle">AKD - Vitrolles</p>
+            <p class="date-info" id="currentDate"></p>
+        </div>
+
+        <div class="success-message" id="successMessage">
+            ✓ Votre présence a été enregistrée avec succès !
+        </div>
+
+        <form id="emargementForm">
+            <div class="form-group">
+                <label for="prenom">Sélectionnez votre prénom *</label>
+                <select id="prenom" name="prenom" required>
+                    <option value="">-- Choisir un prénom --</option>
+                    <option value="Alexandre">Alexandre</option>
+                    <option value="Roberto">Roberto</option>
+                    <option value="Stéphane">Stéphane</option>
+                    <option value="Thomas">Thomas</option>
+                    <option value="Valérie">Valérie</option>
+                </select>
+                <span class="error-message" id="prenomError">Veuillez sélectionner votre prénom</span>
+            </div>
+
+            <div class="form-group signature-section">
+                <label for="signature">Votre signature *</label>
+                <canvas id="signaturePad" class="signature-pad"></canvas>
+                <span class="error-message" id="signatureError">Veuillez apposer votre signature</span>
+                <div class="signature-controls">
+                    <button type="button" class="btn-clear" id="clearBtn">
+                        Effacer</button>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit" id="submitBtn">
+                ✓ Valider ma présence
+            </button>
+        </form>
+
+        <div class="footer">
+            <p>© 2024 MIDEA HVAC France - Service Après-Vente</p>
+        </div>
+    </div>
+
+    <script>
+        // Afficher la date actuelle
+        const dateElement = document.getElementById('currentDate');
+        const today = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+        dateElement.textContent = today.toLocaleDateString('fr-FR', options);
+
+        // Configuration du canvas de signature
+        const canvas = document.getElementById('signaturePad');
+        const ctx = canvas.getContext('2d');
+        let isDrawing = false;
+        let hasSignature = false;
+
+        // Ajuster la taille du canvas
+        function resizeCanvas() {
+            const ratio = Math.max(window.devicePixelRatio || 1, 1);
+            canvas.width = canvas.offsetWidth * ratio;
+            canvas.height = canvas.offsetHeight * ratio;
+            ctx.scale(ratio, ratio);
+        }
+
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        // Configuration du style de dessin
+        ctx.strokeStyle = '#000';
+        ctx.lineWidth = 2;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+
+        // Fonctions de dessin
+        function startDrawing(e) {
+            isDrawing = true;
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.clientX || e.touches[0].clientX) - rect.left;
+            const y = (e.clientY || e.touches[0].clientY) - rect.top;
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+            e.preventDefault();
+            hasSignature = true;
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.clientX || e.touches[0].clientX) - rect.left;
+            const y = (e.clientY || e.touches[0].clientY) - rect.top;
+            ctx.lineTo(x, y);
+            ctx.stroke();
+        }
+
+        function stopDrawing() {
+            isDrawing = false;
+        }
+
+        // Events pour souris
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseout', stopDrawing);
+
+        // Events pour tactile
+        canvas.addEventListener('touchstart', startDrawing);
+        canvas.addEventListener('touchmove', draw);
+        canvas.addEventListener('touchend', stopDrawing);
+
+        // Bouton effacer
+        document.getElementById('clearBtn').addEventListener('click', function() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            hasSignature = false;
+            document.getElementById('signatureError').classList.remove('show');
+        });
+
+        // Gestion du formulaire
+        document.getElementById('emargementForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Reset des messages d'erreur
+            document.getElementById('prenomError').classList.remove('show');
+            document.getElementById('signatureError').classList.remove('show');
+
+            const prenom = document.getElementById('prenom').value;
+            let isValid = true;
+
+            // Validation du prénom
+            if (!prenom) {
+                document.getElementById('prenomError').classList.add('show');
+                isValid = false;
+            }
+
+            // Validation de la signature
+            if (!hasSignature) {
+                document.getElementById('signatureError').classList.add('show');
+                isValid = false;
+            }
+
+            if (!isValid) return;
+
+            // Préparation des données
+            const signatureData = canvas.toDataURL('image/png');
+            const timestamp = new Date().toISOString();
+
+            const emargementData = {
+                prenom: prenom,
+                signature: signatureData,
+                timestamp: timestamp,
+                date: today.toLocaleDateString('fr-FR'),
+                heure: today.toLocaleTimeString('fr-FR')
+            };
+
+            // Génération du PDF
+            generatePDF(emargementData);
+
+            // Afficher le message de succès
+            document.getElementById('successMessage').classList.add('show');
+            
+            // Désactiver le formulaire
+            document.getElementById('submitBtn').disabled = true;
+            document.getElementById('prenom').disabled = true;
+            canvas.style.pointerEvents = 'none';
+            canvas.style.opacity = '0.5';
+            document.getElementById('clearBtn').disabled = true;
+        });
+
+        // Fonction pour générer le PDF
+        function generatePDF(data) {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Récupérer le logo
+            const logoImg = document.getElementById('logoImg');
+            
+            // Ajouter le logo en haut du PDF (SVG)
+            doc.addImage(logoImg.src, 'SVG', 70, 8, 70, 20);
+
+            // En-tête
+            doc.setFontSize(16);
+            doc.setFont(undefined, 'bold');
+            doc.text('Feuille d\'Émargement', 105, 38, { align: 'center' });
+            
+            doc.setFontSize(12);
+            doc.setFont(undefined, 'normal');
+            doc.text('AKD - Vitrolles', 105, 46, { align: 'center' });
+
+            // Ligne de séparation
+            doc.setLineWidth(0.5);
+            doc.line(20, 53, 190, 53);
+
+            // Informations
+            doc.setFontSize(11);
+            doc.text('Date : ' + data.date, 20, 63);
+            doc.text('Heure : ' + data.heure, 20, 70);
+            
+            doc.setFontSize(14);
+            doc.setFont(undefined, 'bold');
+            doc.text('Participant :', 20, 83);
+            doc.setFontSize(16);
+            doc.text(data.prenom, 20, 93);
+
+            // Signature
+            doc.setFontSize(12);
+            doc.setFont(undefined, 'bold');
+            doc.text('Signature :', 20, 108);
+            
+            // Ajouter l'image de la signature
+            doc.addImage(data.signature, 'PNG', 20, 113, 80, 40);
+
+            // Cadre autour de la signature
+            doc.setLineWidth(0.3);
+            doc.rect(20, 113, 80, 40);
+
+            // Footer
+            doc.setFontSize(9);
+            doc.setFont(undefined, 'normal');
+            doc.setTextColor(128, 128, 128);
+            doc.text('Document généré automatiquement le ' + data.date + ' à ' + data.heure, 105, 280, { align: 'center' });
+            doc.text('© MIDEA HVAC France - Service Après-Vente', 105, 285, { align: 'center' });
+
+            // Générer le nom du fichier
+            const fileName = 'Emargement_' + data.prenom + '_' + data.date.replace(/\//g, '-') + '.pdf';
+
+            // Télécharger le PDF
+            doc.save(fileName);
+        }
+    </script>
+</body>
+</html>
