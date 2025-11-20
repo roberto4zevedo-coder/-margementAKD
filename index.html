@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Émargement - AKD MIDEA Vitrolles</title>
+    <title>Émargement Collectif - AKD MIDEA Vitrolles</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         * {
@@ -16,9 +16,6 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #f5f5f5;
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             padding: 20px;
         }
 
@@ -26,27 +23,17 @@
             background: white;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
-            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
             padding: 40px;
             border: 1px solid #e0e0e0;
-            animation: slideIn 0.5s ease-out;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
         }
 
         .header {
             text-align: center;
             margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e0e0e0;
         }
 
         .logo {
@@ -79,8 +66,94 @@
             font-size: 0.9em;
         }
 
+        .participants-list {
+            margin-bottom: 30px;
+        }
+
+        .participants-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .participants-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .participants-count {
+            background: #00A0E3;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .participant-card {
+            background: #fafafa;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .participant-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .participant-number {
+            background: #00A0E3;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .participant-details {
+            flex: 1;
+        }
+
+        .participant-name {
+            font-weight: 600;
+            font-size: 1.1em;
+            color: #333;
+        }
+
+        .participant-time {
+            font-size: 0.85em;
+            color: #999;
+        }
+
+        .participant-signature {
+            max-width: 150px;
+            max-height: 60px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 5px;
+            background: white;
+        }
+
+        .form-section {
+            background: #f9f9f9;
+            border: 2px solid #00A0E3;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
         .form-group {
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         label {
@@ -108,10 +181,6 @@
             box-shadow: 0 0 0 3px rgba(0, 160, 227, 0.1);
         }
 
-        .signature-section {
-            margin-bottom: 25px;
-        }
-
         .signature-pad {
             border: 3px solid #e0e0e0;
             border-radius: 10px;
@@ -119,7 +188,7 @@
             display: block;
             width: 100%;
             height: 200px;
-            background-color: #fafafa;
+            background-color: white;
             transition: border-color 0.3s ease;
         }
 
@@ -148,56 +217,68 @@
             background-color: #c0392b;
         }
 
-        .btn-submit {
+        .btn-add {
             background: #00A0E3;
             color: white;
             border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .btn-add:hover {
+            background: #0087C3;
+        }
+
+        .btn-generate {
+            background: #27ae60;
+            color: white;
+            border: none;
             padding: 18px 40px;
-            border-radius: 4px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 1.2em;
             font-weight: 600;
             width: 100%;
             transition: all 0.3s ease;
-            position: relative;
+            margin-top: 20px;
         }
 
-        .btn-submit:hover {
-            background: #0087C3;
+        .btn-generate:hover {
+            background: #229954;
         }
 
-        .btn-submit:active {
-            background: #006EA3;
-        }
-
-        .btn-submit:disabled {
+        .btn-generate:disabled {
             background: #cccccc;
             cursor: not-allowed;
         }
 
-        .btn-submit.loading {
-            background: #0087C3;
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.9em;
+            margin-top: 5px;
+            display: none;
         }
 
-        .btn-submit.loading::after {
-            content: "";
-            position: absolute;
-            width: 16px;
-            height: 16px;
-            top: 50%;
-            right: 20px;
-            margin-top: -8px;
-            border: 2px solid white;
-            border-radius: 50%;
-            border-top-color: transparent;
-            animation: spinner 0.6s linear infinite;
+        .error-message.show {
+            display: block;
         }
 
-        @keyframes spinner {
-            to { transform: rotate(360deg); }
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
         }
 
-        /* Toast notification */
+        .empty-state-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
         .toast {
             position: fixed;
             top: 20px;
@@ -212,7 +293,6 @@
             transform: translateX(400px);
             transition: transform 0.3s ease;
             z-index: 1000;
-            max-width: 400px;
         }
 
         .toast.show {
@@ -228,8 +308,7 @@
         }
 
         .toast-icon {
-            font-size: 2em;
-            flex-shrink: 0;
+            font-size: 1.5em;
         }
 
         .toast-content {
@@ -238,24 +317,12 @@
 
         .toast-title {
             font-weight: 600;
-            font-size: 1.1em;
             margin-bottom: 5px;
         }
 
         .toast-message {
             color: #666;
             font-size: 0.9em;
-        }
-
-        .error-message {
-            color: #e74c3c;
-            font-size: 0.9em;
-            margin-top: 5px;
-            display: none;
-        }
-
-        .error-message.show {
-            display: block;
         }
 
         .footer {
@@ -265,112 +332,19 @@
             font-size: 0.9em;
         }
 
-        /* Overlay pour le succès */
-        .success-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 999;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .success-overlay.show {
-            display: flex;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .success-modal {
-            background: white;
-            padding: 40px;
-            border-radius: 15px;
-            text-align: center;
-            max-width: 400px;
-            animation: scaleIn 0.3s ease;
-        }
-
-        @keyframes scaleIn {
-            from {
-                transform: scale(0.8);
-                opacity: 0;
-            }
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        .success-icon {
-            width: 80px;
-            height: 80px;
-            background: #27ae60;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px;
-            font-size: 3em;
-            color: white;
-            animation: checkmark 0.5s ease 0.3s both;
-        }
-
-        @keyframes checkmark {
-            0% {
-                transform: scale(0);
-                opacity: 0;
-            }
-            50% {
-                transform: scale(1.2);
-            }
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        .success-title {
-            font-size: 1.5em;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: #333;
-        }
-
-        .success-text {
-            color: #666;
-            margin-bottom: 10px;
-        }
-
-        .success-detail {
-            color: #999;
-            font-size: 0.9em;
-        }
-
-        @media (max-width: 600px) {
+        @media (max-width: 768px) {
             .container {
-                padding: 25px;
+                padding: 20px;
             }
 
-            h1 {
-                font-size: 1.5em;
+            .participant-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
             }
 
-            .logo img {
-                max-width: 200px;
-            }
-
-            .toast {
-                right: 10px;
-                left: 10px;
-                max-width: none;
+            .participant-signature {
+                max-width: 100%;
             }
         }
     </style>
@@ -385,53 +359,67 @@
         </div>
     </div>
 
-    <!-- Success overlay -->
-    <div class="success-overlay" id="successOverlay">
-        <div class="success-modal">
-            <div class="success-icon">✓</div>
-            <div class="success-title">Présence enregistrée !</div>
-            <div class="success-text">Votre émargement a été validé avec succès.</div>
-            <div class="success-detail">Le PDF a été téléchargé.</div>
-        </div>
-    </div>
-
     <div class="container">
         <div class="header">
             <div class="logo">
                 <img id="logoImg" src="data:image/svg+xml;base64,PHN2ZyBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGZpbGwtcnVsZT0iZXZlbm9kZCIgaGVpZ2h0PSI5NjIiIGltYWdlLXJlbmRlcmluZz0ib3B0aW1pemVRdWFsaXR5IiBzaGFwZS1yZW5kZXJpbmc9Imdlb21ldHJpY1ByZWNpc2lvbiIgdGV4dC1yZW5kZXJpbmc9Imdlb21ldHJpY1ByZWNpc2lvbiIgdmlld0JveD0iLTEgMCAzMjI5IDEyNDQiIHdpZHRoPSIyNTAwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxnIGZpbGw9IiMwMGIwZjAiIGZpbGwtcnVsZT0ibm9uemVybyI+PHBhdGggZD0iTTE0ODEgNjA5djQ0NmgxMDVWNjA5em0tMTg5LTE3MGgtMTA4Yy0xMiAwLTEwIDExLTEwIDExIDIgMTQgNSAzNyA1IDg1IDAgMTA2LTEzIDI1OC0xMjkgNDAzbC04IDEwcy03MC00ODgtNzEtNDk3YzAgMCAwLTExLTEwLTExSDg1MmMtMTAgMC0xMCAxMS0xMCAxMS0zIDU2LTM0IDUyNi0zNzcgNjAyIDczIDggMTYxLTE1IDIzOC02MiA5NS01OSAxNTktMTQ2IDE4MC0yNDYgMCAwIDQyIDI2MiA0NyAzMjJ2NGwtMyAyYy05NiA1MS0yMDUgNzktMzE0IDc5LTI3MCAwLTUwOS0xNjAtNjE0LTQwNCA2MiAyODcgMzE4IDQ5NiA2MTcgNDk2IDM0OSAwIDU1Ny0yOTIgNTkzLTUwMCAwIDAgNDcgMzAzIDQ4IDMxM2gxNDNjLTItMTMtOTctNTk1LTk4LTYwNCAwIDAgMC0xMS0xMC0xMXpNODMgNjk0YzAtMzIwIDI3MC01ODAgNjAxLTU4MCAyMDUgMCAzOTYgMTAzIDUwNyAyNzBDMTExMCAxNTYgODg0IDAgNjMxIDAgMzA0IDAgMzggMjU1IDM4IDU2OGMwIDg2IDIxIDE3MCA2MCAyNDctOS0zOS0xNS04MC0xNS0xMjB6bTI1MDYtMjFjLTM4LTQ0LTkxLTY3LTE1NS02Ny02NSAwLTEyMCAyMS0xNjQgNjMtNDMgNDEtNjUgOTYtNjUgMTY0IDAgNjcgMjEgMTIxIDYzIDE2MXMxMDMgNjAgMTc5IDYwYzE0OCAwIDE4MC0xMDIgMTkyLTEzNWwtMzgtMTJjLTM0IDYyLTExMCA2Ni0xNTUgNjMtMzItMi02MS0xMy04NC0yOS0yMy0xNy0zOS00MS00Ni03OGwtMi0xNGgzMzJjLTEtNzMtMjAtMTMyLTU3LTE3NXptLTI2NyAxMTNjLTUgMC01LTUtNS03IDQtMjYgMTQtNDYgMzItNjQgMjAtMjEgNTEtMzMgODQtMzMgMzAgMCA1NCA5IDc1IDI2IDE3IDE1IDI5IDM2IDM2IDY1IDEgMyAzIDEyLTUgMTJoLTIxN3ptNjAxLTE4MmMtMTI2IDAtMTcxIDc3LTE4NSAxMTMgMCAxLTUgMTMtNSAxM2w0MiAxNHMyNy03OCAxMzQtNzNjMTA4IDQgOTUgOTMgOTUgMTA3LTYwLTE4LTE0NS0xNi0yMDEgOS03MCAzMi04MSA5Ni03OCAxNDMgMyA3MCA2NSAxMTkgMTQ1IDEyMyA3MiA0IDEwNC0xMiAxMzQtNDFsLTEgNDFoOTVWNzQ2YzItNTMtMzUtMTQzLTE3NS0xNDN6bTgwIDM0NmMwIDctMiAxMi04IDE1LTE4IDktNTYgMjEtMTAzIDE4LTQ5LTQtNjgtMzktNzEtNTQtMS02LTEyLTcxIDUxLTkxIDQxLTEzIDkzLTUgMTIxIDMgOCAyIDEwIDcgMTAgMTd2OTN6TTE1NzkgNDM5aC04N2MtMTMgMC0xMSAxMy0xMSAxM3Y5NGgxMDd2LTk1czEtMTEtMTAtMTF6bTUzNCAwaC04OWMtOSAwLTkgMTAtOSAxMHYxODNsLTEzLTdjLTE0LTctMjgtMTItNDMtMTVzLTMzLTQtNTMtNGMtNzAgMC0xMjcgMjAtMTY5IDYxLTQxIDQwLTYzIDk4LTYzIDE2OSAwIDYzIDE4IDExNiA1MyAxNTggMzUgNDEgODYgNjIgMTUzIDYyIDk2IDAgMTM0LTU4IDEzNC01OHY1NmgxMDhWOTQ5IDQ1MHMwLTExLTktMTF6bS0xMDQgNDk0Yy0xMCA5LTIzIDE2LTM5IDIyLTE3IDctMzcgMTAtNTkgMTAtMzYgMC02NS0xMi04Ni0zNnMtMzEtNTktMzEtMTA2YzAtNDYgMTAtODAgMjktMTAxIDIwLTIyIDUwLTMzIDkwLTMzIDIxIDAgNDEgMyA1OSAxMCAxNiA2IDI4IDEyIDM3IDIwIDMgMyA2IDggNiAxNXYxODNjMCA3LTMgMTItNiAxNXpNMzE2MyAzNjVjLTM3IDAtNjUgMjgtNjUgNjUgMCAzNiAyOCA2NSA2NSA2NXM2NS0yOCA2NS02NWMwLTM2LTI4LTY1LTY1LTY1em0wIDljMzEgMCA1NSAyNSA1NSA1NnMtMjMgNTYtNTUgNTZjLTMxIDAtNTUtMjUtNTUtNTZzMjMtNTYgNTUtNTZ6bS0xNCA2MGgxNmwyMSAzM2gxMWwtMjItMzNjMTAtMiAxOS04IDE5LTIxcy03LTIxLTI0LTIxaC0yOXY3NWg5di0zM3ptMC04di0yNmgxN2M5IDAgMTggMiAxOCAxMyAwIDEzLTExIDEzLTIyIDEzaC0xMnoiLz48L2c+PC9zdmc+" alt="MIDEA Logo">
             </div>
-            <h1>Feuille d'Émargement</h1>
+            <h1>Feuille d'Émargement Collective</h1>
             <p class="subtitle">AKD - Vitrolles</p>
             <p class="date-info" id="currentDate"></p>
         </div>
 
-        <form id="emargementForm">
-            <div class="form-group">
-                <label for="prenom">Sélectionnez votre prénom *</label>
-                <select id="prenom" name="prenom" required>
-                    <option value="">-- Choisir un prénom --</option>
-                    <option value="Alexandre">Alexandre</option>
-                    <option value="Roberto">Roberto</option>
-                    <option value="Stéphane">Stéphane</option>
-                    <option value="Thomas">Thomas</option>
-                    <option value="Valérie">Valérie</option>
-                </select>
-                <span class="error-message" id="prenomError">Veuillez sélectionner votre prénom</span>
+        <!-- Liste des participants -->
+        <div class="participants-list">
+            <div class="participants-header">
+                <div class="participants-title">Participants</div>
+                <div class="participants-count" id="participantsCount">0</div>
             </div>
-
-            <div class="form-group signature-section">
-                <label for="signature">Votre signature *</label>
-                <canvas id="signaturePad" class="signature-pad"></canvas>
-                <span class="error-message" id="signatureError">Veuillez apposer votre signature</span>
-                <div class="signature-controls">
-                    <button type="button" class="btn-clear" id="clearBtn">🗑️ Effacer</button>
+            <div id="participantsList">
+                <div class="empty-state">
+                    <div class="empty-state-icon">📝</div>
+                    <p>Aucun participant pour le moment</p>
+                    <p style="font-size: 0.9em; margin-top: 10px;">Ajoutez le premier émargement ci-dessous</p>
                 </div>
             </div>
+        </div>
 
-            <button type="submit" class="btn-submit" id="submitBtn">
-                ✓ Valider ma présence
-            </button>
-        </form>
+        <!-- Formulaire d'ajout -->
+        <div class="form-section">
+            <h2 style="margin-bottom: 20px; color: #333; font-size: 1.3em;">➕ Ajouter un participant</h2>
+            <form id="emargementForm">
+                <div class="form-group">
+                    <label for="prenom">Sélectionnez votre prénom *</label>
+                    <select id="prenom" name="prenom" required>
+                        <option value="">-- Choisir un prénom --</option>
+                        <option value="Alexandre">Alexandre</option>
+                        <option value="Roberto">Roberto</option>
+                        <option value="Stéphane">Stéphane</option>
+                        <option value="Thomas">Thomas</option>
+                        <option value="Valérie">Valérie</option>
+                    </select>
+                    <span class="error-message" id="prenomError">Veuillez sélectionner votre prénom</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="signature">Votre signature *</label>
+                    <canvas id="signaturePad" class="signature-pad"></canvas>
+                    <span class="error-message" id="signatureError">Veuillez apposer votre signature</span>
+                    <div class="signature-controls">
+                        <button type="button" class="btn-clear" id="clearBtn">🗑️ Effacer</button>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-add" id="addBtn">
+                    ✓ Ajouter ce participant
+                </button>
+            </form>
+        </div>
+
+        <!-- Bouton de génération PDF -->
+        <button class="btn-generate" id="generateBtn" disabled>
+            📄 Générer le PDF de la feuille d'émargement
+        </button>
 
         <div class="footer">
             <p>© 2024 MIDEA HVAC France - Service Après-Vente</p>
@@ -439,6 +427,10 @@
     </div>
 
     <script>
+        // Variables globales
+        let participants = [];
+        const today = new Date();
+
         // Fonction pour afficher un toast
         function showToast(type, title, message) {
             const toast = document.getElementById('toast');
@@ -455,12 +447,11 @@
 
             setTimeout(() => {
                 toast.classList.remove('show');
-            }, 4000);
+            }, 3000);
         }
 
         // Afficher la date actuelle
         const dateElement = document.getElementById('currentDate');
-        const today = new Date();
         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
         dateElement.textContent = today.toLocaleDateString('fr-FR', options);
 
@@ -528,8 +519,41 @@
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             hasSignature = false;
             document.getElementById('signatureError').classList.remove('show');
-            showToast('success', 'Signature effacée', 'Vous pouvez signer à nouveau');
         });
+
+        // Mettre à jour l'affichage des participants
+        function updateParticipantsList() {
+            const list = document.getElementById('participantsList');
+            const count = document.getElementById('participantsCount');
+            const generateBtn = document.getElementById('generateBtn');
+
+            count.textContent = participants.length;
+
+            if (participants.length === 0) {
+                list.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📝</div>
+                        <p>Aucun participant pour le moment</p>
+                        <p style="font-size: 0.9em; margin-top: 10px;">Ajoutez le premier émargement ci-dessous</p>
+                    </div>
+                `;
+                generateBtn.disabled = true;
+            } else {
+                list.innerHTML = participants.map((p, index) => `
+                    <div class="participant-card">
+                        <div class="participant-info">
+                            <div class="participant-number">${index + 1}</div>
+                            <div class="participant-details">
+                                <div class="participant-name">${p.prenom}</div>
+                                <div class="participant-time">${p.heure}</div>
+                            </div>
+                        </div>
+                        <img src="${p.signature}" class="participant-signature" alt="Signature">
+                    </div>
+                `).join('');
+                generateBtn.disabled = false;
+            }
+        }
 
         // Gestion du formulaire
         document.getElementById('emargementForm').addEventListener('submit', function(e) {
@@ -542,14 +566,13 @@
             const prenom = document.getElementById('prenom').value;
             let isValid = true;
 
-            // Validation du prénom
+            // Validation
             if (!prenom) {
                 document.getElementById('prenomError').classList.add('show');
                 showToast('error', 'Erreur', 'Veuillez sélectionner votre prénom');
                 isValid = false;
             }
 
-            // Validation de la signature
             if (!hasSignature) {
                 document.getElementById('signatureError').classList.add('show');
                 showToast('error', 'Erreur', 'Veuillez apposer votre signature');
@@ -558,108 +581,92 @@
 
             if (!isValid) return;
 
-            // Afficher l'état de chargement
-            const submitBtn = document.getElementById('submitBtn');
-            submitBtn.classList.add('loading');
-            submitBtn.textContent = 'Génération du PDF...';
-            submitBtn.disabled = true;
-
-            // Préparation des données
-            const signatureData = canvas.toDataURL('image/png');
-            const timestamp = new Date().toISOString();
-
-            const emargementData = {
+            // Ajouter le participant
+            const participant = {
                 prenom: prenom,
-                signature: signatureData,
-                timestamp: timestamp,
-                date: today.toLocaleDateString('fr-FR'),
-                heure: today.toLocaleTimeString('fr-FR')
+                signature: canvas.toDataURL('image/png'),
+                heure: today.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }),
+                timestamp: new Date().toISOString()
             };
 
-            // Petit délai pour simuler le traitement
-            setTimeout(() => {
-                // Génération du PDF
-                generatePDF(emargementData);
+            participants.push(participant);
 
-                // Afficher la modal de succès
-                document.getElementById('successOverlay').classList.add('show');
+            // Reset le formulaire
+            document.getElementById('prenom').value = '';
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            hasSignature = false;
 
-                // Désactiver le formulaire
-                document.getElementById('prenom').disabled = true;
-                canvas.style.pointerEvents = 'none';
-                canvas.style.opacity = '0.5';
-                document.getElementById('clearBtn').disabled = true;
+            // Mettre à jour l'affichage
+            updateParticipantsList();
 
-                // Masquer la modal après 3 secondes
-                setTimeout(() => {
-                    document.getElementById('successOverlay').classList.remove('show');
-                }, 3000);
-            }, 500);
+            // Message de succès
+            showToast('success', 'Participant ajouté !', prenom + ' a été ajouté à la liste');
+
+            // Scroll vers la liste
+            document.querySelector('.participants-list').scrollIntoView({ behavior: 'smooth' });
         });
 
-        // Fonction pour générer le PDF
-        function generatePDF(data) {
+        // Générer le PDF
+        document.getElementById('generateBtn').addEventListener('click', function() {
+            if (participants.length === 0) return;
+
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
-
-            // Récupérer le logo
             const logoImg = document.getElementById('logoImg');
-            
-            // Ajouter le logo en haut du PDF (SVG)
-            doc.addImage(logoImg.src, 'SVG', 70, 8, 70, 20);
 
             // En-tête
+            doc.addImage(logoImg.src, 'SVG', 70, 8, 70, 20);
             doc.setFontSize(16);
             doc.setFont(undefined, 'bold');
             doc.text('Feuille d\'Émargement', 105, 38, { align: 'center' });
-            
             doc.setFontSize(12);
             doc.setFont(undefined, 'normal');
             doc.text('AKD - Vitrolles', 105, 46, { align: 'center' });
+            doc.text('Date : ' + today.toLocaleDateString('fr-FR'), 105, 53, { align: 'center' });
 
             // Ligne de séparation
             doc.setLineWidth(0.5);
-            doc.line(20, 53, 190, 53);
+            doc.line(20, 58, 190, 58);
 
-            // Informations
-            doc.setFontSize(11);
-            doc.text('Date : ' + data.date, 20, 63);
-            doc.text('Heure : ' + data.heure, 20, 70);
-            
-            doc.setFontSize(14);
-            doc.setFont(undefined, 'bold');
-            doc.text('Participant :', 20, 83);
-            doc.setFontSize(16);
-            doc.text(data.prenom, 20, 93);
+            // Participants
+            let yPos = 68;
+            const maxPerPage = 5;
 
-            // Signature
-            doc.setFontSize(12);
-            doc.setFont(undefined, 'bold');
-            doc.text('Signature :', 20, 108);
-            
-            // Ajouter l'image de la signature
-            doc.addImage(data.signature, 'PNG', 20, 113, 80, 40);
+            participants.forEach((p, index) => {
+                // Nouvelle page si nécessaire
+                if (index > 0 && index % maxPerPage === 0) {
+                    doc.addPage();
+                    yPos = 20;
+                }
 
-            // Cadre autour de la signature
-            doc.setLineWidth(0.3);
-            doc.rect(20, 113, 80, 40);
+                doc.setFontSize(11);
+                doc.setFont(undefined, 'bold');
+                doc.text(`${index + 1}. ${p.prenom}`, 20, yPos);
+                doc.setFont(undefined, 'normal');
+                doc.setFontSize(9);
+                doc.text(p.heure, 20, yPos + 5);
 
-            // Footer
+                // Signature
+                doc.addImage(p.signature, 'PNG', 100, yPos - 5, 60, 25);
+                doc.setLineWidth(0.2);
+                doc.rect(100, yPos - 5, 60, 25);
+
+                yPos += 35;
+            });
+
+            // Footer sur la dernière page
+            const pageCount = doc.internal.getNumberOfPages();
+            doc.setPage(pageCount);
             doc.setFontSize(9);
-            doc.setFont(undefined, 'normal');
             doc.setTextColor(128, 128, 128);
-            doc.text('Document généré automatiquement le ' + data.date + ' à ' + data.heure, 105, 280, { align: 'center' });
             doc.text('© MIDEA HVAC France - Service Après-Vente', 105, 285, { align: 'center' });
 
-            // Générer le nom du fichier
-            const fileName = 'Emargement_' + data.prenom + '_' + data.date.replace(/\//g, '-') + '.pdf';
-
-            // Télécharger le PDF
+            // Sauvegarder
+            const fileName = 'Emargement_Collectif_' + today.toLocaleDateString('fr-FR').replace(/\//g, '-') + '.pdf';
             doc.save(fileName);
 
-            // Toast de confirmation
-            showToast('success', 'PDF téléchargé !', 'Le fichier "' + fileName + '" a été enregistré');
-        }
+            showToast('success', 'PDF généré !', participants.length + ' participant(s) enregistré(s)');
+        });
     </script>
 </body>
 </html>
