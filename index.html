@@ -36,16 +36,12 @@
             border-bottom: 2px solid #e0e0e0;
         }
 
-        .logo {
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .logo img {
-            max-width: 250px;
-            height: auto;
+        .logo-text {
+            font-size: 3em;
+            font-weight: bold;
+            color: #00A0E3;
+            margin-bottom: 10px;
+            letter-spacing: 3px;
         }
 
         h1 {
@@ -337,6 +333,10 @@
                 padding: 20px;
             }
 
+            .logo-text {
+                font-size: 2em;
+            }
+
             .participant-card {
                 flex-direction: column;
                 align-items: flex-start;
@@ -361,9 +361,6 @@
 
     <div class="container">
         <div class="header">
-            <div class="logo">
-                <img id="logoImg" src="data:image/svg+xml;base64,PHN2ZyBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGZpbGwtcnVsZT0iZXZlbm9kZCIgaGVpZ2h0PSI5NjIiIGltYWdlLXJlbmRlcmluZz0ib3B0aW1pemVRdWFsaXR5IiBzaGFwZS1yZW5kZXJpbmc9Imdlb21ldHJpY1ByZWNpc2lvbiIgdGV4dC1yZW5kZXJpbmc9Imdlb21ldHJpY1ByZWNpc2lvbiIgdmlld0JveD0iLTEgMCAzMjI5IDEyNDQiIHdpZHRoPSIyNTAwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxnIGZpbGw9IiMwMGIwZjAiIGZpbGwtcnVsZT0ibm9uemVybyI+PHBhdGggZD0iTTE0ODEgNjA5djQ0NmgxMDVWNjA5em0tMTg5LTE3MGgtMTA4Yy0xMiAwLTEwIDExLTEwIDExIDIgMTQgNSAzNyA1IDg1IDAgMTA2LTEzIDI1OC0xMjkgNDAzbC04IDEwcy03MC00ODgtNzEtNDk3YzAgMCAwLTExLTEwLTExSDg1MmMtMTAgMC0xMCAxMS0xMCAxMS0zIDU2LTM0IDUyNi0zNzcgNjAyIDczIDggMTYxLTE1IDIzOC02MiA5NS01OSAxNTktMTQ2IDE4MC0yNDYgMCAwIDQyIDI2MiA0NyAzMjJ2NGwtMyAyYy05NiA1MS0yMDUgNzktMzE0IDc5LTI3MCAwLTUwOS0xNjAtNjE0LTQwNCA2MiAyODcgMzE4IDQ5NiA2MTcgNDk2IDM0OSAwIDU1Ny0yOTIgNTkzLTUwMCAwIDAgNDcgMzAzIDQ4IDMxM2gxNDNjLTItMTMtOTctNTk1LTk4LTYwNCAwIDAgMC0xMS0xMC0xMXpNODMgNjk0YzAtMzIwIDI3MC01ODAgNjAxLTU4MCAyMDUgMCAzOTYgMTAzIDUwNyAyNzBDMTExMCAxNTYgODg0IDAgNjMxIDAgMzA0IDAgMzggMjU1IDM4IDU2OGMwIDg2IDIxIDE3MCA2MCAyNDctOS0zOS0xNS04MC0xNS0xMjB6bTI1MDYtMjFjLTM4LTQ0LTkxLTY3LTE1NS02Ny02NSAwLTEyMCAyMS0xNjQgNjMtNDMgNDEtNjUgOTYtNjUgMTY0IDAgNjcgMjEgMTIxIDYzIDE2MXMxMDMgNjAgMTc5IDYwYzE0OCAwIDE4MC0xMDIgMTkyLTEzNWwtMzgtMTJjLTM0IDYyLTExMCA2Ni0xNTUgNjMtMzItMi02MS0xMy04NC0yOS0yMy0xNy0zOS00MS00Ni03OGwtMi0xNGgzMzJjLTEtNzMtMjAtMTMyLTU3LTE3NXptLTI2NyAxMTNjLTUgMC01LTUtNS03IDQtMjYgMTQtNDYgMzItNjQgMjAtMjEgNTEtMzMgODQtMzMgMzAgMCA1NCA5IDc1IDI2IDE3IDE1IDI5IDM2IDM2IDY1IDEgMyAzIDEyLTUgMTJoLTIxN3ptNjAxLTE4MmMtMTI2IDAtMTcxIDc3LTE4NSAxMTMgMCAxLTUgMTMtNSAxM2w0MiAxNHMyNy03OCAxMzQtNzNjMTA4IDQgOTUgOTMgOTUgMTA3LTYwLTE4LTE0NS0xNi0yMDEgOS03MCAzMi04MSA5Ni03OCAxNDMgMyA3MCA2NSAxMTkgMTQ1IDEyMyA3MiA0IDEwNC0xMiAxMzQtNDFsLTEgNDFoOTVWNzQ2YzItNTMtMzUtMTQzLTE3NS0xNDN6bTgwIDM0NmMwIDctMiAxMi04IDE1LTE4IDktNTYgMjEtMTAzIDE4LTQ5LTQtNjgtMzktNzEtNTQtMS02LTEyLTcxIDUxLTkxIDQxLTEzIDkzLTUgMTIxIDMgOCAyIDEwIDcgMTAgMTd2OTN6TTE1NzkgNDM5aC04N2MtMTMgMC0xMSAxMy0xMSAxM3Y5NGgxMDd2LTk1czEtMTEtMTAtMTF6bTUzNCAwaC04OWMtOSAwLTkgMTAtOSAxMHYxODNsLTEzLTdjLTE0LTctMjgtMTItNDMtMTVzLTMzLTQtNTMtNGMtNzAgMC0xMjcgMjAtMTY5IDYxLTQxIDQwLTYzIDk4LTYzIDE2OSAwIDYzIDE4IDExNiA1MyAxNTggMzUgNDEgODYgNjIgMTUzIDYyIDk2IDAgMTM0LTU4IDEzNC01OHY1NmgxMDhWOTQ5IDQ1MHMwLTExLTktMTF6bS0xMDQgNDk0Yy0xMCA5LTIzIDE2LTM5IDIyLTE3IDctMzcgMTAtNTkgMTAtMzYgMC02NS0xMi04Ni0zNnMtMzEtNTktMzEtMTA2YzAtNDYgMTAtODAgMjktMTAxIDIwLTIyIDUwLTMzIDkwLTMzIDIxIDAgNDEgMyA1OSAxMCAxNiA2IDI4IDEyIDM3IDIwIDMgMyA2IDggNiAxNXYxODNjMCA3LTMgMTItNiAxNXpNMzE2MyAzNjVjLTM3IDAtNjUgMjgtNjUgNjUgMCAzNiAyOCA2NSA2NSA2NXM2NS0yOCA2NS02NWMwLTM2LTI4LTY1LTY1LTY1em0wIDljMzEgMCA1NSAyNSA1NSA1NnMtMjMgNTYtNTUgNTZjLTMxIDAtNTUtMjUtNTUtNTZzMjMtNTYgNTUtNTZ6bS0xNCA2MGgxNmwyMSAzM2gxMWwtMjItMzNjMTAtMiAxOS04IDE5LTIxcy03LTIxLTI0LTIxaC0yOXY3NWg5di0zM3ptMC04di0yNmgxN2M5IDAgMTggMiAxOCAxMyAwIDEzLTExIDEzLTIyIDEzaC0xMnoiLz48L2c+PC9zdmc+" alt="MIDEA Logo">
-            </div>
             <h1>Feuille d'Émargement Collective</h1>
             <p class="subtitle">AKD - Vitrolles</p>
             <p class="date-info" id="currentDate"></p>
@@ -610,62 +607,72 @@
         document.getElementById('generateBtn').addEventListener('click', function() {
             if (participants.length === 0) return;
 
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            const logoImg = document.getElementById('logoImg');
+            try {
+                console.log('Début génération PDF...');
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
 
-            // En-tête
-            doc.addImage(logoImg.src, 'SVG', 70, 8, 70, 20);
-            doc.setFontSize(16);
-            doc.setFont(undefined, 'bold');
-            doc.text('Feuille d\'Émargement', 105, 38, { align: 'center' });
-            doc.setFontSize(12);
-            doc.setFont(undefined, 'normal');
-            doc.text('AKD - Vitrolles', 105, 46, { align: 'center' });
-            doc.text('Date : ' + today.toLocaleDateString('fr-FR'), 105, 53, { align: 'center' });
-
-            // Ligne de séparation
-            doc.setLineWidth(0.5);
-            doc.line(20, 58, 190, 58);
-
-            // Participants
-            let yPos = 68;
-            const maxPerPage = 5;
-
-            participants.forEach((p, index) => {
-                // Nouvelle page si nécessaire
-                if (index > 0 && index % maxPerPage === 0) {
-                    doc.addPage();
-                    yPos = 20;
-                }
-
-                doc.setFontSize(11);
+                // En-tête - Texte MIDEA stylisé
+                doc.setFontSize(24);
                 doc.setFont(undefined, 'bold');
-                doc.text(`${index + 1}. ${p.prenom}`, 20, yPos);
+                doc.setTextColor(0, 160, 227); // Couleur bleue Midea
+                doc.text('MIDEA', 105, 20, { align: 'center' });
+
+                doc.setTextColor(0, 0, 0); // Retour au noir
+                doc.setFontSize(16);
+                doc.text('Feuille d\'Émargement', 105, 32, { align: 'center' });
+                doc.setFontSize(12);
                 doc.setFont(undefined, 'normal');
+                doc.text('AKD - Vitrolles', 105, 39, { align: 'center' });
+                doc.text('Date : ' + today.toLocaleDateString('fr-FR'), 105, 46, { align: 'center' });
+
+                // Ligne de séparation
+                doc.setLineWidth(0.5);
+                doc.line(20, 51, 190, 51);
+
+                // Participants
+                let yPos = 61;
+                const maxPerPage = 5;
+
+                participants.forEach((p, index) => {
+                    // Nouvelle page si nécessaire
+                    if (index > 0 && index % maxPerPage === 0) {
+                        doc.addPage();
+                        yPos = 20;
+                    }
+
+                    doc.setFontSize(11);
+                    doc.setFont(undefined, 'bold');
+                    doc.text(`${index + 1}. ${p.prenom}`, 20, yPos);
+                    doc.setFont(undefined, 'normal');
+                    doc.setFontSize(9);
+                    doc.text(p.heure, 20, yPos + 5);
+
+                    // Signature
+                    doc.addImage(p.signature, 'PNG', 100, yPos - 5, 60, 25);
+                    doc.setLineWidth(0.2);
+                    doc.rect(100, yPos - 5, 60, 25);
+
+                    yPos += 35;
+                });
+
+                // Footer sur la dernière page
+                const pageCount = doc.internal.getNumberOfPages();
+                doc.setPage(pageCount);
                 doc.setFontSize(9);
-                doc.text(p.heure, 20, yPos + 5);
+                doc.setTextColor(128, 128, 128);
+                doc.text('© MIDEA HVAC France - Service Après-Vente', 105, 285, { align: 'center' });
 
-                // Signature
-                doc.addImage(p.signature, 'PNG', 100, yPos - 5, 60, 25);
-                doc.setLineWidth(0.2);
-                doc.rect(100, yPos - 5, 60, 25);
+                // Sauvegarder
+                const fileName = 'Emargement_Collectif_' + today.toLocaleDateString('fr-FR').replace(/\//g, '-') + '.pdf';
+                doc.save(fileName);
 
-                yPos += 35;
-            });
-
-            // Footer sur la dernière page
-            const pageCount = doc.internal.getNumberOfPages();
-            doc.setPage(pageCount);
-            doc.setFontSize(9);
-            doc.setTextColor(128, 128, 128);
-            doc.text('© MIDEA HVAC France - Service Après-Vente', 105, 285, { align: 'center' });
-
-            // Sauvegarder
-            const fileName = 'Emargement_Collectif_' + today.toLocaleDateString('fr-FR').replace(/\//g, '-') + '.pdf';
-            doc.save(fileName);
-
-            showToast('success', 'PDF généré !', participants.length + ' participant(s) enregistré(s)');
+                console.log('PDF sauvegardé');
+                showToast('success', 'PDF généré !', participants.length + ' participant(s) enregistré(s)');
+            } catch (error) {
+                console.error('Erreur génération PDF:', error);
+                showToast('error', 'Erreur', 'Impossible de générer le PDF: ' + error.message);
+            }
         });
     </script>
 </body>
